@@ -68,7 +68,6 @@ namespace zich {
 
         friend Matrix operator*(const double scalar, Matrix &mat);
 
-//        friend bool operator==(Matrix const &mat1,Matrix const &mat2);
     };
 
 }

@@ -5,8 +5,14 @@
 #include <string>
 
 namespace zich {
-
     Matrix::Matrix(const vector<double> &matrix, const int row, const int col) {
+        if (row <=0 || col <=0){
+            throw std::invalid_argument("row or col can't be negative or 0");
+        }
+
+        if (matrix.size()!=row*col){
+            throw std::invalid_argument("matrix size must be equal to row*col");
+        }
         this->my_matrix = matrix;
         this->row = row;
         this->col = col;
@@ -15,98 +21,91 @@ namespace zich {
     Matrix::~Matrix() {}
 
     Matrix Matrix::operator+(Matrix const &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+        if (this->row != mat.row || this->col!=this->col){
+            throw std::invalid_argument("matrices have different size");
+        }
+        vector<double> addition;
+        for (int i=0; i<this->my_matrix.size(); i++){
+            addition[i]=this->my_matrix[i]+mat.my_matrix[i];
+        }
+        new_mat= Matrix::Matrix(addition,this->row,this->col);
+        return new_mat;
     }
 
     Matrix &Matrix::operator++() {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]+=1;
+        }
         return *this;
     }
 
     Matrix Matrix::operator++(const int num) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+        Matrix copy=*this;
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]+=1;
+        }
+        return copy;
     }
 
     Matrix &Matrix::operator+=(const Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
+        if (this->row != mat.row || this->col!=this->col){
+            throw std::invalid_argument("matrices have different size");
+        }
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]=this->my_matrix[i]+mat.my_matrix[i];
+        }
         return *this;
     }
 
     Matrix Matrix::operator-(const Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+        if (this->row != mat.row || this->col!=this->col){
+            throw std::invalid_argument("matrices have different size");
+        }
+        vector<double> subtraction;
+        for (int i=0; i<this->my_matrix.size(); i++){
+            addition[i]=this->my_matrix[i]-mat.my_matrix[i];
+        }
+        new_mat= Matrix::Matrix(subtraction,this->row,this->col);
+        return new_mat;
+    }
     }
 
     Matrix &Matrix::operator--() {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]-=1;
+        }
         return *this;
     }
 
     Matrix Matrix::operator--(const int num) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+        Matrix copy=*this;
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]-=1;
+        }
+        return copy;
     }
 
     Matrix &Matrix::operator-=(const Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
+        if (this->row != mat.row || this->col!=this->col){
+            throw std::invalid_argument("matrices have different size");
+        }
+        for (int i=0; i<this->my_matrix.size(); i++){
+            this->my_matrix[i]=this->my_matrix[i]-mat.my_matrix[i];
+        }
         return *this;
     }
 
     Matrix Matrix::operator*(const Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
     }
 
     Matrix &Matrix::operator*=(const Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
         return *this;
     }
 
     Matrix Matrix::operator*(const double scalar) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
     }
 
     Matrix &Matrix::operator*=(const double scalar) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
         return *this;
     }
 
@@ -132,27 +131,15 @@ namespace zich {
     bool operator!=(const Matrix& m1, const Matrix& m2) { return true; }
 
     Matrix operator-(Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+
     }
 
     Matrix operator+(Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+
     }
 
     Matrix operator*(const double scalar, Matrix &mat) {
-        int r = 1;
-        int c = 1;
-        vector<double> vec;
-        Matrix m(vec, r, c);
-        return m;
+
     }
 
 
