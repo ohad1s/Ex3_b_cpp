@@ -56,8 +56,8 @@ namespace zich {
         friend bool operator==(const Matrix& m1, const Matrix& m2);
         friend bool operator!=(const Matrix& m1, const Matrix& m2);
 
-//        double multiplication(const Matrix &mat, const int tempRow, const int tempCol);
-//        double sumMatrix();
+        double mul_vectors(const Matrix &mat, const int r, const int c);
+
         friend std::ostream &operator<<(std::ostream &output, const Matrix &m);
 
         friend std::istream &operator>>(std::istream &input, Matrix &m);
