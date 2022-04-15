@@ -25,7 +25,7 @@ namespace zich {
             throw std::invalid_argument("matrices have different size");
         }
         vector<double> addition;
-        addition.resize((unsigned int)(mat.row * mat.col));
+        addition.resize((unsigned int) (mat.row * mat.col));
         for (int i = 0; i < this->my_matrix.size(); i++) {
             addition[(unsigned int) i] = this->my_matrix[(unsigned int) i] + mat.my_matrix[(unsigned int) i];
         }
@@ -63,7 +63,7 @@ namespace zich {
             throw std::invalid_argument("matrices have different size");
         }
         vector<double> subtraction;
-        subtraction.resize((unsigned int)(mat.row * mat.col));
+        subtraction.resize((unsigned int) (mat.row * mat.col));
         for (int i = 0; i < this->my_matrix.size(); i++) {
             subtraction[(unsigned int) i] = this->my_matrix[(unsigned int) i] - mat.my_matrix[(unsigned int) i];
         }
@@ -118,7 +118,7 @@ namespace zich {
                 mul[(unsigned int) (i * mat.col + j)] = mul_vectors(mat, i, j);
             }
         }
-        Matrix new_mat(mul, this->row , mat.col);
+        Matrix new_mat(mul, this->row, mat.col);
         return new_mat;
     }
 
@@ -140,7 +140,7 @@ namespace zich {
 
     Matrix Matrix::operator*(const double scalar) {
         vector<double> mul;
-        mul.resize((unsigned int)(this->row * this->col));
+        mul.resize((unsigned int) (this->row * this->col));
         for (int i = 0; i < this->my_matrix.size(); i++) {
             mul[(unsigned int) i] = this->my_matrix[(unsigned int) i] * scalar;
         }
@@ -209,11 +209,83 @@ namespace zich {
 
 
     std::ostream &operator<<(std::ostream &output, const Matrix &m) {
+        for (int i = 0; i < m.row; i++) {
+            output << '[';
+            for (int j = 0; j < m.col; j++) {
+                output << (m.my_matrix[(unsigned int) (i * m.row + j)]);
+                if (j != m.col - 1) {
+                    output << " ";
+                }
+
+            }
+            if (i != m.row) {
+                output << "]";
+            }
+            if (i != m.row - 1) {
+                output << "\n";
+            }
+
+        }
         return output;
     }
 
+    const int MIN = 48;
+    const int MAX = 57;
+
     std::istream &operator>>(std::istream &input, Matrix &m) {
+        int row = 0;
+        int col = 0;
+        string curr;
+        while (!input.eof()) {
+            string small_data;
+            input >> small_data;
+            if (small_data[0] == '[') {
+                if (small_data[1] < MIN || small_data[1] > MAX) {
+                    throw std::invalid_argument("Invalid Matrix enteredA\n");
+                }
+            } else if (small_data[1] == ']') {
+                if (small_data[2] == 0) {}
+                else {
+                    if (small_data[2] != ',') {
+                        throw std::invalid_argument("Invalid Matrix entered\n");
+                    }
+                    if (small_data[3] != 0) {
+                        throw std::invalid_argument("Invalid Matrix entered\n");
+                    }
+                }
+            }
+            curr += small_data;
+        }
+        for (unsigned int i = 0; i < curr.length(); ++i) {
+            if (curr[i] != '[') {
+                throw std::invalid_argument("Invalid Matrix entered\n");
+            }
+            row++;
+            i++;
+            while (curr[i] != ']') {
+                if (curr[i] < MIN || curr[i] > MAX) {
+                    throw std::invalid_argument("Invalid Matrix entered\n");
+                }
+                string value;
+                value += curr[i];
+                m.my_matrix.push_back(std::stod(value));
+                i++;
+            }
+            i++;
+            if (curr[i] == '\0') {
+                break;
+            }
+            if (curr[i] != ',') {
+                throw std::invalid_argument("Invalid Matrix entered\n");
+            }
+        }
+        m.row = row;
+        if (row == 0) {
+            throw std::invalid_argument("Invalid Matrix entered\n");
+        }
+        m.col = (int) (m.my_matrix.size()) / row;
         return input;
+
     }
 
     bool operator==(const Matrix &m1, const Matrix &m2) {
@@ -236,15 +308,14 @@ namespace zich {
 
     Matrix operator-(Matrix &mat) {
         vector<double> minus;
-        minus.resize((unsigned int)(mat.row * mat.col));
-       for (int i=0; i<mat.my_matrix.size();i++){
-           if (mat.my_matrix[(unsigned int)i]!=0){
-               minus[(unsigned int)i]=mat.my_matrix[(unsigned int)i]*-1;
-           }
-           else{
-               minus[(unsigned int)i]=0;
-           }
-       }
+        minus.resize((unsigned int) (mat.row * mat.col));
+        for (int i = 0; i < mat.my_matrix.size(); i++) {
+            if (mat.my_matrix[(unsigned int) i] != 0) {
+                minus[(unsigned int) i] = mat.my_matrix[(unsigned int) i] * -1;
+            } else {
+                minus[(unsigned int) i] = 0;
+            }
+        }
         Matrix new_mat(minus, mat.row, mat.col);
         return new_mat;
     }
@@ -255,7 +326,7 @@ namespace zich {
 
     Matrix operator*(const double scalar, Matrix &mat) {
         vector<double> mul;
-        mul.resize((unsigned int)(mat.row * mat.col));
+        mul.resize((unsigned int) (mat.row * mat.col));
         for (int i = 0; i < mat.my_matrix.size(); i++) {
             mul[(unsigned int) i] = mat.my_matrix[(unsigned int) i] * scalar;
         }
